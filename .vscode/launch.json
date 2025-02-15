@@ -1,42 +1,43 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      { // This configuration runs the python -m uvicorn app.main:app --reload --port 8001 inside project_root_folder/backend
-        "name": "Python: Uvicorn",
-        "type": "debugpy",
-        "request": "launch",
-        "module": "uvicorn",
-        "args": [
-          "app.main:app", // This points to your FastAPI app
-          "--reload", // Enables auto-reload for development
-          "--port",
-          "8001", // Runs the server on port 8001
-          "--host",
-          "127.0.0.1" // Ensures the server binds to localhost
-        ],
-        "jinja": true,
-        "env": {
-          "PYTHONPATH": "${workspaceFolder}/backend" // Ensures proper module resolution
-        },
-        "cwd": "${workspaceFolder}/backend", // Set current working directory to the backend folder
-        "console": "integratedTerminal"
+  "version": "0.2.0",
+  "configurations": [
+    { // This configuration runs the python -m uvicorn app.main:app --reload --port 8001 inside project_root_folder/backend
+      "name": "Python: Uvicorn",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "app.main:app", // This points to your FastAPI app
+        "--reload", // Enables auto-reload for development
+        "--port",
+        "8001", // Runs the server on port 8001
+        "--host",
+        "127.0.0.1" // Ensures the server binds to localhost
+      ],
+      "jinja": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend" // Ensures proper module resolution
       },
-      { // This configuration to run unit test cases in debug mode with breakpoints added in vscode
-        "name": "Python: Debug Tests (pytest)",
-        "type": "debugpy",
-        "request": "launch",
-        "module": "pytest",
-        "args": [
-          // "app/tests", // Replace 'app/tests' with the path to your tests folder or relative path to the test file
-          "app/tests/test_utils.py", // Replace 'app/tests/test_utils.py' with the path to your tests folder or relative path to the test file
-          "-v" // Verbose mode for detailed output (optional)
-        ],
-        "env": {
-          "PYTHONPATH": "${workspaceFolder}/backend" // Ensures modules load correctly
-        },
-        "cwd": "${workspaceFolder}/backend", // Set working directory to backend
-        "console": "integratedTerminal"
-      }
-    ]
-  }
-  
+      "cwd": "${workspaceFolder}/backend", // Set current working directory to the backend folder
+      "console": "integratedTerminal"
+    },
+    { // This configuration to run unit test cases in debug mode with breakpoints added in vscode
+      "name": "Python: Debug Tests (pytest)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        // "app/tests", // Replace 'app/tests' with the path to your tests folder or relative path to the test file
+        "app/tests/test_routers/test_product.py", // Replace 'app/tests/test_utils.py' with the path to your tests folder or relative path to the test file
+        "-v", // Verbose mode for detailed output (optional)
+        "-k",
+        "test_update_product_description_with_more_than_max_length"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend" // Ensures modules load correctly
+      },
+      "cwd": "${workspaceFolder}/backend", // Set working directory to backend
+      "console": "integratedTerminal"
+    }
+  ]
+}
