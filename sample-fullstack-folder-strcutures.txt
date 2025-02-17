@@ -1,0 +1,16 @@
+-| frontend/
+---| about.vue
+---| index.vue
+---| posts/
+-----| [id].vue
+-| backend/
+---| pyptoject.toml
+---| requirements.txt
+---| README.md
+-----| app/
+-------| config.py
+-------| db.py
+-------| main.py
+-------| models.py
+-------| utils.py
+-| .pre-commit-config.yaml
