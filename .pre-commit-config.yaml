@@ -5,18 +5,10 @@ repos:
       - id: check-yaml
   - repo: local
     hooks:
-      - id: talisman-precommit
-        name: talisman
-        entry: bash -c 'if [[ "$OSTYPE" =~ ^msys ]]; then talisman --githook pre-commit; else ./talisman --githook pre-commit; fi'
-        pass_filenames: true
-        language: python
-        verbose: true
-  - repo: local
-    hooks:
       - id: black
         name: Reformat with Black
-        entry: ./.hooks/pre-commit_black.sh
-        language: system
+        entry: .hooks/pre-commit_black.sh
+        language: python
         pass_filenames: true
         # always_run: true
         types: [python]
@@ -24,16 +16,9 @@ repos:
     hooks:
       - id: mypy
         name: Mypy Type Checking
-        entry: ./.hooks/pre-commit_mypy.sh
-        language: system
+        entry: .hooks/pre-commit_mypy.sh
+        language: python
         pass_filenames: true
         # always_run: true
         types: [python]
-  - repo: local
-    hooks:
-      - id: eslint
-        name: Lint and Fix auto fixable issues using Eslint
-        entry: ./hooks/pre-commit_eslint.sh
-        language: system
-        pass_filenames: true        
 

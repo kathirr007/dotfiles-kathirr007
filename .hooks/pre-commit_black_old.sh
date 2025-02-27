@@ -1,11 +1,4 @@
-#!/usr/bin/env sh
-
-# Relaunch in Bash if not already in Bash
-if [ -z "$BASH_VERSION" ]; then
-    exec $(command -v bash) "$0" "$@"
-fi
-
-# Now in Bash
+#!/usr/bin/env bash
 
 # Switch to backend folder 'backend'
 cd backend || { echo "Error: Could not change to directory 'backend'."; exit 1; }
