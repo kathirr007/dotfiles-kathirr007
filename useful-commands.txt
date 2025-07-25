@@ -1,0 +1,207 @@
+============VS-Code============
+1. For Mutiline Regex search use [\s\S\n]+?
+=======================================
+
+============7z-Commands============
+
+1. 7z - Exclude files/folders
+
+7z a -xr@<7z exclude list file> <archive name>.7z <folder-to-archive>/
+
+eg: 7z a -xr@7z-exclude-list.txt test.7z ./
+sample exclude file(7z-exclude-list.txt)
+*\output/
+*\node_modules/
+
+=======================================
+
+============Update NPM in NVM environment=========
+
+Copy the following code and save it as updateNpm.bat and run that file from powershell "./updateNpm.bat latest"
+
+@echo off
+SETLOCAL EnableDelayedExpansion
+
+if [%1] == [] (
+	echo Pass in the version you would like to install, or "latest" to install the latest npm version.
+) else (
+	set wanted_version=%1
+
+	if "!wanted_version!" == "latest" (
+		for /f %%i in ('npm show npm version') do set wanted_version=%%i
+	)
+
+	for /f %%i in ('npm -g -v') do set cur_version=%%i
+
+	if "!cur_version!" == "!wanted_version!" (
+		echo Already on npm version !wanted_version!.
+	) else (
+		echo Updating to !wanted_version!...
+
+		set node_path=!PROGRAMFILES!\nodejs
+
+		rename "!node_path!\npm" npm2
+		rename "!node_path!\npm.cmd" npm2.cmd
+		if exist "!node_path!\npm.ps1" (
+			rename "!node_path!\npm.ps1" npm2.ps1
+		)
+		rename "!node_path!\npx" npx2
+		rename "!node_path!\npx.cmd" npx2.cmd
+		if exist "!node_path!\npx.ps1" (
+			rename "!node_path!\npx.ps1" npx2.ps1
+		)
+		rename "!node_path!\node_modules\npm" npm2
+		
+		node "!node_path!\node_modules\npm2\bin\npm-cli.js" i npm@!wanted_version! -g
+
+		for /f %%i in ('npm -g -v') do set new_version=%%i
+
+		echo New version installed is !new_version!
+
+		if "!new_version!" == "!wanted_version!" (
+			echo Successfully updated to !wanted_version!. Cleaning up backups...
+			del "!node_path!\npm2"
+			del "!node_path!\npm2.cmd"
+			if exist "!node_path!\npm2.ps1" (
+				del "!node_path!\npm2.ps1"
+			)
+			del "!node_path!\npx2"
+			del "!node_path!\npx2.cmd"
+			if exist "!node_path!\npx2.ps1" (
+				del "!node_path!\npx2.ps1"
+			)
+			@RD /S /Q "!node_path!\node_modules\npm2"
+			echo Update complete.
+		) else (
+			echo Something went wrong. Rolling back.
+			if exist "!node_path!\npm" (
+				del "!node_path!\npm"
+			)
+			if exist "!node_path!\npm.cmd" (
+				del "!node_path!\npm.cmd"
+			)
+			if exist "!node_path!\npm.ps1" (
+				del "!node_path!\npm.ps1"
+			)
+			if exist "!node_path!\npx" (
+				del "!node_path!\npx"
+			)
+			if exist "!node_path!\npx.cmd" (
+				del "!node_path!\npx.cmd"
+			)
+			if exist "!node_path!\npx.ps1" (
+				del "!node_path!\npx.ps1"
+			)
+			if exist "!node_path!\node_modules\npm" (
+				@RD /S /Q "!node_path!\node_modules\npm"
+			)
+			rename "!node_path!\npm2" npm
+			rename "!node_path!\npm2.cmd" npm.cmd
+			rename "!node_path!\npm2.ps1" npm.ps1
+			rename "!node_path!\npx2" npx
+			rename "!node_path!\npx2.cmd" npx.cmd
+			rename "!node_path!\npx2.ps1" npx.ps1
+			rename "!node_path!\node_modules\npm2" npm
+		)
+	)
+)
+
+=======================================
+
+============FFMPEG-Commands============
+
+1. convert 4k to 2k
+ffmpeg -hide_banner \
+-i "Sony-Food-Fizzle-UHD-4K.mp4" \
+-ss 0 -t 10 \
+-pix_fmt yuv420p10le \
+-map_chapters 0 \
+-b:v 10M -vf scale=-1:1440 \
+-c:v libx265 -preset slow -crf 22 \
+-x265-params keyint=60:bframes=3:vbv-bufsize=75000:vbv-maxrate=75000:hdr-opt=1:repeat-headers=1:colorprim=bt2020:transfer=smpte-st-2084:colormatrix=bt2020nc:master-display="G(13250,34500)B(7500,3000)R(34000,16000)WP(15635,16450)L(10000000,500)" \
+-c:a copy \
+"Sony-Food-Fizzle-UHD-4K-3.mp4"
+
+2. Convert to fullHD
+ffmpeg -hide_banner -i  "Sony-Food-Fizzle-UHD-4K.mp4" \
+-c:v libx265 \
+-vf "scale=-1:1080" \
+-preset slow -level:v 6.2 -crf 22 \
+"Sony-Food-Fizzle-2K-crf-22-slow.mp4"
+
+3. To open two videos with single control using mpv - player
+mpv.exe --lavfi-complex="[vid1][vid2]hstack[vo];[aid1][aid2]amix[ao]" input1.mkv --external-file=input2.mkv
+mpv.exe --lavfi-complex="[vid1][vid2]hstack[vo]" input1.mkv --external-file=input2.mkv
+
+4. Encode videos for specific file size
+formula => bitrate = file size / duration
+Two-Pass Encoding
+	This method is generally used if you are targeting a specific output file size and output quality from frame to frame is of less importance. This is best explained with an example. Your video is 10 minutes (600 seconds) long and an output of 200 MiB is desired. Since bitrate = file size / duration:
+
+	(200 MiB * 8192 [converts MiB to kBit]) / 600 seconds = ~2730 kBit/s total bitrate
+	2730 - 128 kBit/s (desired audio bitrate) = 2602 kBit/s video bitrate
+	You can also forgo the bitrate calculation if you already know what final (average) bitrate you need.
+
+Two-Pass Example
+	For two-pass, you need to run ffmpeg twice, with almost the same settings, except for:
+
+	In pass 1 and 2, use the -x265-params pass=1 and -x265-params pass=2 options, respectively.
+	In pass 1, output to a null file descriptor, not an actual file. (This will generate a logfile that ffmpeg needs for the second pass.)
+	In pass 1, you need to specify an output format (with -f) that matches the output format you will use in pass 2.
+	In pass 1, you can leave audio out by specifying -an.
+	For libx265, the -pass option (that you would use for libx264) is not applicable.
+
+		ffmpeg -y -i input -c:v libx265 -b:v 2600k -x265-params pass=1 -an -f mp4 /dev/null && \
+		ffmpeg -i input -c:v libx265 -b:v 2600k -x265-params pass=2 -c:a aac -b:a 128k output.mp4
+	Note: Windows users should use NUL instead of /dev/null and ^ instead of \.
+
+	As with CRF, choose the slowest -preset you can tolerate, and optionally apply a -tune setting. Note that when using faster presets with the same target bitrate, the resulting quality will be lower and vice-versa.
+
+5. Batch conversion
+
+@echo off
+setlocal
+set ffmpeg_path=C:\ffmpeg\ffmpeg.exe
+
+for /R %%i in (*.mpeg) do call :encode "%%i"
+echo.
+echo done with all files
+echo.
+echo press any key to exit ... 
+pause>nul
+endlocal & exit
+
+:encode <file>
+echo.
+echo ENCODING: %~1
+"%ffmpeg_path%"  -i "%~1" -c:v libx265 -preset fast -crf 22 -c:a aac -b:a 64k "%~dpn1-ffencoded.mp4"
+goto :eof
+
+6. Multiple stream encoding
+-c copy -map 0:0 -map 0:1 -map 0:2 -map 0:3 -c:v:0 libx265 -preset fast -tune psnr -provile:v main10 -level:v 6.2 -crf 22 -c:a aac -b:a 112k -c:s mov_text
+The above example copies the streams 0:0 video, 0:1 1st audio stream, 0:2 2nd audio stream, 0:3 is subtitle stream and -c:s mov_text is used for subtitle codec for mp4 container
+
+=======================================
+
+============bashrc-aliases================
+# Start browser sync server in current directory
+alias bsss="browser-sync start -s --no-open"
+# Start browser sync server in current directory and watch all files
+alias bsssw="browser-sync start -s -f . --no-open"
+# Start browser sync server in current directory in given port number and watch specific files
+alias bsssp='_bsssp(){ browser-sync start --server --files "**/*.css, **/*.html, **/*.js, !node_modules/**/*" --port "$1" --no-open;}; _bsssp'
+# Start browser sync server in current directory with directory listings in given port number and watch specific files
+alias bssspd='_bssspd(){ browser-sync start --server --files "**/*.css, **/*.html, **/*.js, !node_modules/**/*" --directory --port "$1" --no-open;}; _bssspd'
+alias mkcd='_mkcd(){ mkdir "$1"; cd "$1";}; _mkcd'
+==========================================
+
+============rename-files recursively with renamer npm package================
+# below command find and replace the character "e" with "_" in all the files & folders recursively from the current folder
+# for more details look at the wiki https://github.com/75lb/renamer/wiki
+
+renamer -d --find "/e/" --replace "_" *
+
+==========================================
+
+
+
