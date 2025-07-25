@@ -1,0 +1,1 @@
+find ./*.mp4 -type f -not -name '*FFB*.mp4' -delete ; find ./ -depth -name '*_FFB.mp4*' -execdir bash -c 'mv -i "$1" "${1//_FFB.mp4/.mp4}"' bash {} \;
