@@ -212,6 +212,10 @@ alias pnppgbdsk='pnppg ./apps/brightdesk/prisma/schema.prisma'
 # Generate prisma for all BR services
 alias pnppgall='pnppg ./apps/brightreturn/prisma/schema.prisma && pnppg ./apps/brightdrive/prisma/schema.prisma && pnppg ./apps/brightdesk/prisma/schema.prisma'
 
+alias appsec:backend='python -m uvicorn app.main:app --reload --port 8001'
+# Run monorepo app
+alias rmrapp='rmrapp(){ npm run --workspace=packages/"$1" "$2"; }; rmrapp'
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
