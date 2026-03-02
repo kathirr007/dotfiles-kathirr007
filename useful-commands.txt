@@ -203,5 +203,9 @@ renamer -d --find "/e/" --replace "_" *
 
 ==========================================
 
+=================CLI command to run vitest in browser debug mode=========================
+npx vitest --environment jsdom src/services/secAssistService.spec.js -t "getGeneralComplianceStatus" --inspect-brk --no-file-parallelism --test-timeout=0
+==========================================
+
 
 
