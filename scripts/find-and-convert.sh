@@ -44,7 +44,7 @@ else
 fi
 
 # --- collect all videos ---
-mapfile -t all_videos < <(find . -type f \( -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.avi" -o -iname "*.mov" -o -iname "*.webm" -o -iname "*.flv" -o -iname "*.wmv" -o -iname "*.m4v" \) 2>/dev/null)
+mapfile -t all_videos < <(find . -type f \( -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.avi" -o -iname "*.mov" -o -iname "*.webm" -o -iname "*.flv" -o -iname "*.wmv" -o -iname "*.m4v" -o -iname "*.ts" \) 2>/dev/null)
 
 if [[ ${#all_videos[@]} -eq 0 ]]; then
   echo "No videos found."
@@ -77,7 +77,7 @@ fi
 # --- select format ---
 echo ""
 echo "Select output format:"
-formats=(mp4 mkv avi mov webm flv wmv)
+formats=(mp4 mkv avi mov webm flv wmv ts)
 if $use_fzf; then
   ext=$(printf '%s\n' "${formats[@]}" | fzf --prompt="Select output format: ")
   [[ -z "$ext" ]] && { echo "No format selected."; exit 1; }
@@ -172,6 +172,11 @@ get_ffmpeg_opts() {
       # WMV2 + WMA — Windows Media; q:v 5 encodes quickly with acceptable quality
       echo "-c:v wmv2 -q:v 5 \
             -c:a wmav2 -b:a 192k -ar 48000"
+      ;;
+    ts)
+      # H.264 + AAC — MPEG-TS container; stream copy when possible, re-encode for resolution changes
+      echo "-c:v libx264 -crf 22 -preset fast -profile:v high -level 4.1 \
+            -c:a aac -b:a 192k -ar 48000"
       ;;
     *)
       echo ""
