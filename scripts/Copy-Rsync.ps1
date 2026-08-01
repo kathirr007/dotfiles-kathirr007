@@ -1,3 +1,16 @@
+# Usage for each platform (script lives at C:\Users\Admin\Copy-Rsync.ps1; on macOS/Linux copy it anywhere, e.g. ~/Copy-Rsync.ps1):
+# Windows - PowerShell
+# & "C:\Users\Admin\Copy-Rsync.ps1" -Source "J:\Tuts\MyFolder" -Destination "\\K007VAULT\DataPart1\Softwares\MyFolder" -Threads 128
+# Windows - cmd.exe
+# powershell -ExecutionPolicy Bypass -File "C:\Users\Admin\Copy-Rsync.ps1" -Source "J:\Tuts\MyFolder" -Destination "\\K007VAULT\DataPart1\Softwares\MyFolder" -Threads 128
+# macOS / Linux - Terminal (needs PowerShell Core + rsync installed)
+# pwsh -File ~/Copy-Rsync.ps1 -Source "/home/user/MyFolder" -Destination "/mnt/vault/Softwares/MyFolder"
+
+# Notes:
+# - All use the same params: -Source, -Destination, optional -Threads (Windows only).
+# - Include the folder name in -Destination to copy the whole folder (as discussed).
+# - If pwsh isn't installed on macOS/Linux: brew install powershell or apt install powershell; rsync comes preinstalled on macOS, apt install rsync on Linux.
+
 param(
   [Parameter(Mandatory = $true)][string]$Source,
   [Parameter(Mandatory = $true)][string]$Destination,
