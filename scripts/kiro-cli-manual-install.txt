@@ -1,0 +1,23 @@
+Option 1: Manual binary install kiro-cli (recommended)
+The MSI installer wants C:\Program Files\Kiro-Cli\ which needs admin. Instead, download the MSI, extract it, and place the binary in a user directory:
+# 1. Download the MSI
+$msiUrl = "https://prod.download.cli.kiro.dev/stable/latest/kiro-cli-x86_64-pc-windows-msvc.msi"
+$msiPath = "$env:TEMP\kiro-cli.msi"
+Invoke-WebRequest -Uri $msiUrl -OutFile $msiPath
+
+# 2. Extract MSI contents (no install needed)
+$extractDir = "$env:LOCALAPPDATA\Kiro-Cli"
+New-Item -ItemType Directory -Force -Path $extractDir
+msiexec /a "$msiPath" /qb TARGETDIR="$extractDir"
+
+# 3. Add to user PATH (persists across sessions)
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+$kiroPath = "$extractDir\Kiro-Cli"
+if ($userPath -notlike "*$kiroPath*") {
+    [Environment]::SetEnvironmentVariable("Path", "$kiroPath;$userPath", "User")
+    Write-Host "Added $kiroPath to user PATH"
+}
+
+# 4. Verify
+& "$kiroPath\kiro-cli.exe" --version
+Then open a new terminal and run kiro-cli.
