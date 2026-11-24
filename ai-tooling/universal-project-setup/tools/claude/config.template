@@ -1,0 +1,50 @@
+{
+  "model": "${REASONING_MODEL:-claude-sonnet-4-20250514}",
+  "apiKeyHelper": "echo $ANTHROPIC_API_KEY",
+  "providers": {
+    "anthropic": {
+      "apiKey": "${ANTHROPIC_API_KEY}",
+      "baseUrl": "https://api.anthropic.com"
+    },
+    "openai": {
+      "apiKey": "${OPENAI_API_KEY}",
+      "baseUrl": "https://api.openai.com/v1"
+    },
+    "openrouter": {
+      "apiKey": "${OPENROUTER_API_KEY}",
+      "baseUrl": "https://openrouter.ai/api/v1"
+    },
+    "google": {
+      "apiKey": "${GOOGLE_API_KEY}",
+      "baseUrl": "https://generativelanguage.googleapis.com"
+    },
+    "ollama": {
+      "baseUrl": "${OLLAMA_BASE_URL:-http://localhost:11434}"
+    }
+  },
+  "modelAliases": {
+    "coding-fast": "gpt-4o-mini",
+    "reasoning-deep": "claude-sonnet-4-20250514",
+    "architecture": "claude-opus-4-20250514",
+    "review-thorough": "claude-sonnet-4-20250514",
+    "local-only": "qwen2.5-coder:32b"
+  },
+  "defaultModelAlias": "reasoning-deep",
+  "hooks": {
+    "preToolUse": [],
+    "postToolUse": [],
+    "notification": []
+  },
+  "agents": {
+    "enabled": true,
+    "directory": ".claude/agents"
+  },
+  "memory": {
+    "enabled": true,
+    "file": "CLAUDE.md"
+  },
+  "permissions": {
+    "allow": ["read", "write", "edit", "bash", "glob", "grep"],
+    "deny": ["secret", "key", "password", "token"]
+  }
+}

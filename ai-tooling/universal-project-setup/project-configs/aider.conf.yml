@@ -1,0 +1,43 @@
+# Project-local Aider Config
+# Symlinked to .aider.conf.yml in project root
+# Commit this to your project repo
+
+model: ${REASONING_MODEL:-claude-sonnet-4-20250514}
+weak-model: ${CODING_MODEL:-gpt-4o-mini}
+editor: ${EDITOR:-code --wait}
+auto-commits: true
+dirty-commits: true
+show-diffs: true
+stream: true
+vim: false
+encoding: utf-8
+
+# Project-specific model aliases
+model-aliases:
+  coding-fast: ${CODING_MODEL:-gpt-4o-mini}
+  reasoning-deep: ${REASONING_MODEL:-claude-sonnet-4-20250514}
+  architecture: ${ARCH_MODEL:-claude-opus-4-20250514}
+  review-thorough: ${REVIEW_MODEL:-claude-sonnet-4-20250514}
+  local-only: ${LOCAL_MODEL:-qwen2.5-coder:32b}
+
+# Project-specific conventions
+# conventions-file: .aider/conventions.md
+
+ignore:
+  - "*.log"
+  - "*.tmp"
+  - "node_modules/"
+  - ".git/"
+  - "dist/"
+  - "build/"
+  - "*.min.js"
+  - "*.map"
+  - ".env*"
+  - "*.secret"
+  - "*.key"
+  - "*.pem"
+  - "*.p12"
+  - "*.pfx"
+
+message-history: 50
+show-model-warnings: true

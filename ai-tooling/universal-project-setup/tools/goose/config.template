@@ -1,0 +1,124 @@
+# Goose Configuration
+# Renders to ~/.config/goose/config.yaml
+
+providers:
+  anthropic:
+    api_key: "${ANTHROPIC_API_KEY}"
+    models:
+      - "claude-sonnet-4-20250514"
+      - "claude-opus-4-20250514"
+      - "claude-3-5-haiku-20241022"
+
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    models:
+      - "gpt-4o-2024-11-20"
+      - "gpt-4o-mini"
+      - "gpt-4-turbo-2024-04-09"
+      - "o1-preview"
+      - "o1-mini"
+
+  openrouter:
+    api_key: "${OPENROUTER_API_KEY}"
+    models:
+      - "deepseek/deepseek-chat"
+      - "deepseek/deepseek-r1"
+      - "meta-llama/llama-3.3-70b-instruct"
+      - "qwen/qwen-2.5-72b-instruct"
+
+  google:
+    api_key: "${GOOGLE_API_KEY}"
+    models:
+      - "gemini-1.5-pro"
+      - "gemini-1.5-flash"
+
+  ollama:
+    base_url: "${OLLAMA_BASE_URL:-http://localhost:11434}"
+    models:
+      - "qwen2.5-coder:32b"
+      - "qwen2.5-coder:14b"
+      - "codellama:34b"
+      - "deepseek-coder:33b"
+      - "phi4"
+      - "llama3.2:3b"
+
+default_provider: anthropic
+default_model: "claude-sonnet-4-20250514"
+
+extensions:
+  - name: "filesystem"
+    enabled: true
+    config:
+      allowed_directories: ["."]
+      deny_patterns: [".git/", "node_modules/", "dist/", "build/"]
+
+  - name: "git"
+    enabled: true
+    config:
+      auto_commit: false
+      commit_message_template: "goose: {{description}}"
+
+  - name: "shell"
+    enabled: true
+    config:
+      allowed_commands: ["git", "npm", "pnpm", "yarn", "python", "pip", "pytest", "cargo", "go", "make", "docker", "kubectl"]
+      timeout: 120
+
+  - name: "browser"
+    enabled: true
+    config:
+      headless: true
+
+# Custom MCP servers (add your own)
+# mcp_servers:
+#   - name: "my-server"
+#     command: "npx"
+#     args: ["-y", "@modelcontextprotocol/server-github"]
+#     env:
+#       GITHUB_TOKEN: "${GITHUB_TOKEN}"
+
+profiles:
+  coding-fast:
+    provider: openai
+    model: "gpt-4o-mini"
+    description: "Quick edits, boilerplate, simple features"
+
+  reasoning-deep:
+    provider: anthropic
+    model: "claude-sonnet-4-20250514"
+    description: "Architecture decisions, complex refactoring, planning"
+
+  architecture:
+    provider: anthropic
+    model: "claude-opus-4-20250514"
+    description: "System design, tech selection, architectural review"
+
+  review-thorough:
+    provider: anthropic
+    model: "claude-sonnet-4-20250514"
+    description: "PR review, security audit, performance analysis"
+
+  local-only:
+    provider: ollama
+    model: "qwen2.5-coder:32b"
+    description: "Private code, offline work, zero cost"
+
+  test-generation:
+    provider: openai
+    model: "gpt-4o-mini"
+    description: "Unit tests, integration tests, edge cases"
+
+  debugging:
+    provider: anthropic
+    model: "claude-sonnet-4-20250514"
+    description: "Root cause analysis, stack trace interpretation"
+
+agent_config:
+  max_turns: 50
+  confirm_actions: true
+  show_thinking: false
+
+output:
+  format: "markdown"
+  streaming: true
+  show_token_usage: false

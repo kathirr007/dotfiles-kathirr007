@@ -1,0 +1,128 @@
+# OpenHands Configuration
+# Renders to ~/.openhands/config.yaml (global) or .openhands/config.yaml (project)
+
+llm:
+  model: "${REASONING_MODEL:-claude-sonnet-4-20250514}"
+  api_key: "${ANTHROPIC_API_KEY}"
+  base_url: "https://api.anthropic.com"
+  temperature: 0.0
+  max_tokens: 8192
+  # Override via env: OPENHANDS_LLM_MODEL, OPENHANDS_LLM_API_KEY, OPENHANDS_LLM_BASE_URL
+
+  # Alternative models (configure via env or edit)
+  # model: "${CODING_MODEL:-gpt-4o-mini}"
+  # api_key: "${OPENAI_API_KEY}"
+  # base_url: "https://api.openai.com/v1"
+
+  # Local model example:
+  # model: "${LOCAL_MODEL:-qwen2.5-coder:32b}"
+  # api_key: "ollama"
+  # base_url: "${OLLAMA_BASE_URL:-http://localhost:11434}"
+
+workspace:
+  mount_path: "/workspace"
+  repo_path: "."
+  # For Docker: mounts current directory to /workspace
+
+agents:
+  default: "CodeActAgent"
+  available:
+    - "CodeActAgent"
+    - "BrowsingAgent"
+  # Custom agents go in .openhands/agenthub/
+
+security:
+  confirmation_mode: true
+  allowed_commands:
+    - "git"
+    - "npm"
+    - "pnpm"
+    - "yarn"
+    - "python"
+    - "pip"
+    - "pytest"
+    - "cargo"
+    - "go"
+    - "make"
+    - "docker"
+    - "kubectl"
+    - "terraform"
+    - "ansible"
+    - "jq"
+    - "curl"
+    - "wget"
+    - "tar"
+    - "gzip"
+    - "unzip"
+    - "rsync"
+    - "ssh"
+    - "scp"
+  denied_commands:
+    - "rm -rf /"
+    - "dd"
+    - "mkfs"
+    - "fdisk"
+    - "shutdown"
+    - "reboot"
+    - "systemctl"
+    - "service"
+    - "iptables"
+    - "ufw"
+
+memory:
+  enabled: true
+  max_size: 1000
+  persistence_path: ".openhands/memory"
+  # Stores conversation history for context
+
+runtime:
+  type: "docker"
+  image: "ghcr.io/all-hands-ai/openhands:latest"
+  # Alternative: "local" for non-Docker (experimental)
+  docker_options:
+    - "--network=host"
+    - "--add-host=host.docker.internal:host-gateway"
+
+  # Resource limits
+  cpu_limit: "4"
+  memory_limit: "8g"
+
+  # Environment variables passed to container
+  env:
+    - "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}"
+    - "OPENAI_API_KEY=${OPENAI_API_KEY}"
+    - "OPENROUTER_API_KEY=${OPENROUTER_API_KEY}"
+    - "GOOGLE_API_KEY=${GOOGLE_API_KEY}"
+    - "GITHUB_TOKEN=${GITHUB_TOKEN}"
+
+sandbox:
+  enabled: true
+  type: "docker"
+  # Options: "docker", "kubernetes", "local"
+
+telemetry:
+  enabled: false
+  # Set to true to send anonymous usage data
+
+plugins:
+  enabled: true
+  directory: ".openhands/plugins"
+  # Custom plugins for extended functionality
+
+logging:
+  level: "INFO"
+  file: ".openhands/logs/openhands.log"
+  max_files: 10
+  max_size_mb: 100
+
+# Agent-specific configuration
+agent_config:
+  CodeActAgent:
+    max_iterations: 50
+    browser_enabled: true
+    skills: []
+
+  BrowsingAgent:
+    max_pages: 10
+    search_engine: "duckduckgo"
+    headless: true

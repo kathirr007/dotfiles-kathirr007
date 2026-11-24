@@ -1,0 +1,98 @@
+{
+  "models": [
+    {
+      "title": "Claude Sonnet 4",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-20250514",
+      "apiKey": "${ANTHROPIC_API_KEY}",
+      "contextLength": 200000,
+      "completionOptions": { "temperature": 0.0, "maxTokens": 8192 }
+    },
+    {
+      "title": "GPT-4o",
+      "provider": "openai",
+      "model": "gpt-4o-2024-11-20",
+      "apiKey": "${OPENAI_API_KEY}",
+      "contextLength": 128000,
+      "completionOptions": { "temperature": 0.1, "maxTokens": 16384 }
+    },
+    {
+      "title": "GPT-4o Mini",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "apiKey": "${OPENAI_API_KEY}",
+      "contextLength": 128000,
+      "completionOptions": { "temperature": 0.1, "maxTokens": 16384 }
+    },
+    {
+      "title": "Local Qwen 2.5 Coder 32B",
+      "provider": "ollama",
+      "model": "qwen2.5-coder:32b",
+      "apiBase": "http://localhost:11434",
+      "contextLength": 32768,
+      "completionOptions": { "temperature": 0.1, "maxTokens": 4096 }
+    }
+  ],
+  "customCommands": [
+    {
+      "name": "test-gen",
+      "prompt": "Write comprehensive tests for the selected code. Cover edge cases, error conditions, and typical usage. Use the project's testing framework.",
+      "model": "gpt-4o-mini"
+    },
+    {
+      "name": "refactor",
+      "prompt": "Refactor the selected code for clarity, performance, and maintainability. Preserve all existing behavior. Explain your changes.",
+      "model": "claude-sonnet-4-20250514"
+    },
+    {
+      "name": "review",
+      "prompt": "Review the selected code for bugs, security issues, performance problems, and style violations. Provide specific, actionable feedback.",
+      "model": "claude-sonnet-4-20250514"
+    },
+    {
+      "name": "document",
+      "prompt": "Write clear documentation for the selected code. Include purpose, parameters, return values, exceptions, and usage examples.",
+      "model": "claude-sonnet-4-20250514"
+    },
+    {
+      "name": "explain",
+      "prompt": "Explain the selected code in simple terms. Cover what it does, how it works, and why it was written this way.",
+      "model": "claude-sonnet-4-20250514"
+    }
+  ],
+  "contextProviders": [
+    "codebase",
+    "terminal",
+    "diff",
+    "docs",
+    "grep",
+    "open",
+    "problems",
+    "folder"
+  ],
+  "tabAutocompleteModel": {
+    "title": "GPT-4o Mini",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "apiKey": "${OPENAI_API_KEY}"
+  },
+  "tabAutocompleteOptions": {
+    "maxTokens": 500,
+    "temperature": 0.0
+  },
+  "embeddingsProvider": {
+    "provider": "openai",
+    "model": "text-embedding-3-small",
+    "apiKey": "${OPENAI_API_KEY}"
+  },
+  "indexing": {
+    "enabled": true,
+    "maxFileSize": 100000,
+    "exclude": ["**/node_modules/**", "**/dist/**", "**/build/**", "**/*.min.js", "**/*.map", "**/.git/**"]
+  },
+  "ui": {
+    "defaultModel": "Claude Sonnet 4",
+    "showTokenCounts": true,
+    "stream": true
+  }
+}

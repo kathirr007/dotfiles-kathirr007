@@ -1,0 +1,43 @@
+# Aider Configuration
+# Renders to ~/.aider.conf.yml (global) or .aider.conf.yml (project)
+
+model: ${REASONING_MODEL:-claude-sonnet-4-20250514}
+weak-model: ${CODING_MODEL:-gpt-4o-mini}
+editor: ${EDITOR:-code --wait}
+auto-commits: true
+dirty-commits: true
+show-diffs: true
+stream: true
+vim: false
+encoding: utf-8
+
+# Model aliases (use /model alias in aider)
+model-aliases:
+  coding-fast: ${CODING_MODEL:-gpt-4o-mini}
+  reasoning-deep: ${REASONING_MODEL:-claude-sonnet-4-20250514}
+  architecture: ${ARCH_MODEL:-claude-opus-4-20250514}
+  review-thorough: ${REVIEW_MODEL:-claude-sonnet-4-20250514}
+  local-only: ${LOCAL_MODEL:-qwen2.5-coder:32b}
+
+# API keys from environment
+# ANTHROPIC_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY, GOOGLE_API_KEY
+
+# Conventions file (create .aider/conventions.md in project)
+# conventions-file: .aider/conventions.md
+
+# Ignore patterns
+ignore:
+  - "*.log"
+  - "*.tmp"
+  - "node_modules/"
+  - ".git/"
+  - "dist/"
+  - "build/"
+  - "*.min.js"
+  - "*.map"
+
+# Message history
+message-history: 50
+
+# Show model info
+show-model-warnings: true

@@ -1,0 +1,308 @@
+# Unified Model Registry
+# Source of truth for all AI tool configurations
+# Commit to repo, symlink to ~/.config/ai-models/registry.yaml
+
+models:
+  # ==========================================
+  # CLOUD MODELS
+  # ==========================================
+  claude-sonnet-4:
+    provider: anthropic
+    model_id: claude-sonnet-4-20250514
+    display_name: "Claude Sonnet 4"
+    context_window: 200000
+    max_output: 8192
+    strengths: [coding, reasoning, analysis, architecture, review]
+    cost_tier: high
+    env_key: ANTHROPIC_API_KEY
+    api_base: https://api.anthropic.com
+
+  claude-opus-4:
+    provider: anthropic
+    model_id: claude-opus-4-20250514
+    display_name: "Claude Opus 4"
+    context_window: 200000
+    max_output: 8192
+    strengths: [reasoning, architecture, complex-tasks, planning]
+    cost_tier: highest
+    env_key: ANTHROPIC_API_KEY
+    api_base: https://api.anthropic.com
+
+  claude-haiku-3:
+    provider: anthropic
+    model_id: claude-3-5-haiku-20241022
+    display_name: "Claude 3.5 Haiku"
+    context_window: 200000
+    max_output: 8192
+    strengths: [speed, coding, cheap]
+    cost_tier: low
+    env_key: ANTHROPIC_API_KEY
+    api_base: https://api.anthropic.com
+
+  gpt-4o:
+    provider: openai
+    model_id: gpt-4o-2024-11-20
+    display_name: "GPT-4o"
+    context_window: 128000
+    max_output: 16384
+    strengths: [coding, multimodal, speed, reasoning]
+    cost_tier: high
+    env_key: OPENAI_API_KEY
+    api_base: https://api.openai.com/v1
+
+  gpt-4o-mini:
+    provider: openai
+    model_id: gpt-4o-mini
+    display_name: "GPT-4o Mini"
+    context_window: 128000
+    max_output: 16384
+    strengths: [coding, speed, cheap, high-volume]
+    cost_tier: low
+    env_key: OPENAI_API_KEY
+    api_base: https://api.openai.com/v1
+
+  gpt-4-turbo:
+    provider: openai
+    model_id: gpt-4-turbo-2024-04-09
+    display_name: "GPT-4 Turbo"
+    context_window: 128000
+    max_output: 4096
+    strengths: [reasoning, coding, analysis]
+    cost_tier: high
+    env_key: OPENAI_API_KEY
+    api_base: https://api.openai.com/v1
+
+  o1-preview:
+    provider: openai
+    model_id: o1-preview
+    display_name: "o1 Preview"
+    context_window: 128000
+    max_output: 32768
+    strengths: [deep-reasoning, math, science, architecture]
+    cost_tier: highest
+    env_key: OPENAI_API_KEY
+    api_base: https://api.openai.com/v1
+
+  o1-mini:
+    provider: openai
+    model_id: o1-mini
+    display_name: "o1 Mini"
+    context_window: 128000
+    max_output: 32768
+    strengths: [reasoning, coding, math, cheaper-than-o1]
+    cost_tier: high
+    env_key: OPENAI_API_KEY
+    api_base: https://api.openai.com/v1
+
+  gemini-1.5-pro:
+    provider: google
+    model_id: gemini-1.5-pro
+    display_name: "Gemini 1.5 Pro"
+    context_window: 1000000
+    max_output: 8192
+    strengths: [long-context, multimodal, coding, reasoning]
+    cost_tier: medium
+    env_key: GOOGLE_API_KEY
+    api_base: https://generativelanguage.googleapis.com
+
+  gemini-1.5-flash:
+    provider: google
+    model_id: gemini-1.5-flash
+    display_name: "Gemini 1.5 Flash"
+    context_window: 1000000
+    max_output: 8192
+    strengths: [speed, long-context, cheap, high-volume]
+    cost_tier: low
+    env_key: GOOGLE_API_KEY
+    api_base: https://generativelanguage.googleapis.com
+
+  # ==========================================
+  # OPENROUTER MODELS (unified access)
+  # ==========================================
+  deepseek-v3:
+    provider: openrouter
+    model_id: deepseek/deepseek-chat
+    display_name: "DeepSeek V3"
+    context_window: 64000
+    max_output: 4096
+    strengths: [coding, reasoning, cheap]
+    cost_tier: low
+    env_key: OPENROUTER_API_KEY
+    api_base: https://openrouter.ai/api/v1
+
+  deepseek-r1:
+    provider: openrouter
+    model_id: deepseek/deepseek-r1
+    display_name: "DeepSeek R1"
+    context_window: 64000
+    max_output: 4096
+    strengths: [reasoning, math, coding]
+    cost_tier: medium
+    env_key: OPENROUTER_API_KEY
+    api_base: https://openrouter.ai/api/v1
+
+  llama-3.3-70b:
+    provider: openrouter
+    model_id: meta-llama/llama-3.3-70b-instruct
+    display_name: "Llama 3.3 70B"
+    context_window: 128000
+    max_output: 4096
+    strengths: [coding, reasoning, open-weights]
+    cost_tier: low
+    env_key: OPENROUTER_API_KEY
+    api_base: https://openrouter.ai/api/v1
+
+  qwen-2.5-72b:
+    provider: openrouter
+    model_id: qwen/qwen-2.5-72b-instruct
+    display_name: "Qwen 2.5 72B"
+    context_window: 128000
+    max_output: 4096
+    strengths: [coding, multilingual, reasoning]
+    cost_tier: low
+    env_key: OPENROUTER_API_KEY
+    api_base: https://openrouter.ai/api/v1
+
+  # ==========================================
+  # LOCAL MODELS (Ollama / LM Studio)
+  # ==========================================
+  qwen2.5-coder-32b:
+    provider: ollama
+    model_id: qwen2.5-coder:32b
+    display_name: "Qwen 2.5 Coder 32B"
+    context_window: 32768
+    max_output: 4096
+    strengths: [coding, private, free, offline]
+    cost_tier: zero
+    env_key: ""  # No API key needed
+    api_base: http://localhost:11434
+
+  qwen2.5-coder-14b:
+    provider: ollama
+    model_id: qwen2.5-coder:14b
+    display_name: "Qwen 2.5 Coder 14B"
+    context_window: 32768
+    max_output: 4096
+    strengths: [coding, private, free, faster]
+    cost_tier: zero
+    env_key: ""
+    api_base: http://localhost:11434
+
+  codellama-34b:
+    provider: ollama
+    model_id: codellama:34b
+    display_name: "CodeLlama 34B"
+    context_window: 16384
+    max_output: 4096
+    strengths: [coding, private, free]
+    cost_tier: zero
+    env_key: ""
+    api_base: http://localhost:11434
+
+  deepseek-coder-33b:
+    provider: ollama
+    model_id: deepseek-coder:33b
+    display_name: "DeepSeek Coder 33B"
+    context_window: 16384
+    max_output: 4096
+    strengths: [coding, private, free]
+    cost_tier: zero
+    env_key: ""
+    api_base: http://localhost:11434
+
+  phi-4:
+    provider: ollama
+    model_id: phi4
+    display_name: "Phi-4"
+    context_window: 16384
+    max_output: 4096
+    strengths: [reasoning, coding, small, fast]
+    cost_tier: zero
+    env_key: ""
+    api_base: http://localhost:11434
+
+  llama-3.2-3b:
+    provider: ollama
+    model_id: llama3.2:3b
+    display_name: "Llama 3.2 3B"
+    context_window: 128000
+    max_output: 4096
+    strengths: [speed, tiny, edge-device]
+    cost_tier: zero
+    env_key: ""
+    api_base: http://localhost:11434
+
+# ==========================================
+# MODEL PROFILES - Map tasks to models
+# ==========================================
+profiles:
+  # Fast, cheap coding tasks (edits, boilerplate, simple features)
+  coding-fast:
+    primary: gpt-4o-mini
+    fallback: qwen2.5-coder-14b
+    description: "Quick edits, boilerplate, simple features"
+
+  # Deep reasoning, architecture, complex refactoring
+  reasoning-deep:
+    primary: claude-sonnet-4
+    fallback: o1-preview
+    description: "Architecture decisions, complex refactoring, planning"
+
+  # Architecture design, system design, tech choices
+  architecture:
+    primary: claude-opus-4
+    fallback: claude-sonnet-4
+    description: "System design, tech selection, architectural review"
+
+  # Thorough code review, security audit, performance analysis
+  review-thorough:
+    primary: claude-sonnet-4
+    fallback: gpt-4o
+    description: "PR review, security audit, performance analysis"
+
+  # Local-only for sensitive code, offline, or free
+  local-only:
+    primary: qwen2.5-coder-32b
+    fallback: codellama-34b
+    description: "Private code, offline work, zero cost"
+
+  # Test generation
+  test-generation:
+    primary: gpt-4o-mini
+    fallback: qwen2.5-coder-14b
+    description: "Unit tests, integration tests, edge cases"
+
+  # Documentation writing
+  docs-writing:
+    primary: claude-sonnet-4
+    fallback: gpt-4o
+    description: "API docs, README, architecture docs, comments"
+
+  # Debugging assistance
+  debugging:
+    primary: claude-sonnet-4
+    fallback: o1-mini
+    description: "Root cause analysis, stack trace interpretation"
+
+  # Learning/explanation
+  learning:
+    primary: claude-sonnet-4
+    fallback: gemini-1.5-flash
+    description: "Code explanation, concept teaching, onboarding"
+
+# ==========================================
+# PROVIDER DEFAULTS
+# ==========================================
+provider_defaults:
+  anthropic:
+    default_model: claude-sonnet-4
+    api_version: "2023-06-01"
+  openai:
+    default_model: gpt-4o
+  google:
+    default_model: gemini-1.5-pro
+  openrouter:
+    default_model: deepseek-v3
+  ollama:
+    default_model: qwen2.5-coder-32b
+    default_base_url: http://localhost:11434
